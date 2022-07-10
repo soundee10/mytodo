@@ -1,15 +1,26 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { atom, RecoilState, useRecoilState } from "recoil";
+import { toDoState } from "../atom";
+import CreateToDo from "./CreateToDo";
+import ToDo from "./ToDo";
 
 
 function TodoList(){
-    const {register, handleSubmit, watch} = useForm();
+    const [todos, setTodos] = useRecoilState(toDoState)
+
     return(
-        <form onSubmit={handleSubmit((data)=>{console.log(data);})}>
-            <input {...register("toDo")} placeholder="write to do">
-            </input>
-            <button>add</button>
-        </form>
+        <div>
+            <h1> To Dos </h1>
+            <hr />
+            <CreateToDo />
+            <ul>
+                {
+                    todos.map((toDo)=>
+                    <ToDo key={toDo.id} {...toDo}/>)
+                }
+            </ul>
+        </div>
     );
 }
 
